@@ -166,7 +166,7 @@ See also: [`use-ssh-key`](samples/use-ssh-key.yml) example
 | `orka-vm-name-config` | The name of the config map, which stores the name of the generated VM configuration. Applicable to `orka-init` / `orka-deploy` / `orka-teardown`. | orka-vm-name |
 | `orka-vm-name-config-key` | The name of the key in the VM name config map, which stores the name of the generated VM configuration. Applicable to `orka-init` / `orka-deploy` / `orka-teardown`. | vm-name |
 
-### Samples `TaskRun`
+### Samples
 
 [samples/dump-disk-info.yaml](samples/dump-disk-info.yaml) is a sample `TaskRun` that uses the `orka-full` `Task` to create a VM, run a script on it, and then clean up the environment.
 
