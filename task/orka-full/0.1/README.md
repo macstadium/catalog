@@ -22,13 +22,80 @@ See also: [Using Orka, At a Glance](https://orkadocs.macstadium.com/docs/quick-s
 
 See also: [GCP-MacStadium Site-to-Site VPN](https://docs.macstadium.com/docs/google-cloud-setup)
 
-### Install
+### Installation
 
-`kubectl apply --namespace=$NAMESPACE -f orka-full.yml`
+Before you can use these `Tasks` in Tekton pipelines, you need to install them and the Orka configuration in your Kubernetes cluster.
 
-### Configure credentials
+**Default namespace installation**
+
+To install in the `default` namespace of your Kubernetes cluster, run the following command against your actual Orka API endpoint.
+
+```sh
+ORKA_API=http://10.221.188.100 ./install.sh --apply
+```
+
+To uninstall from the `default` namespace, run the script with the `-d` or `--delete` flag:
+
+```sh
+./install.sh --delete
+```
+
+**Custom namespace installation**
+
+To install in a custom namespace, run the following command against your preferred namespace and your actual Orka API endpoint:
+
+```sh
+NAMESPACE=tekton-orka ORKA_API=http://10.221.188.100 ./install.sh --apply
+```
+
+To uninstall from a selected namespace, run the script with the `-d` or `--delete` flag against the namespace:
+
+```sh
+NAMESPACE=tekton-orka ./install.sh --delete
+```
+
+### Storing your credentials
+
+The provided `Tasks` look for two Kubernetes secrets that store your credentials: `orka-creds` for the Orka user and `orka-ssh-creds` for the SSH credentials. In the current setup, both secrets have `username` and `password` keys.
+
+These defaults exist for convenience and you can change them using the available [`Task` parameters](#Configuring-Secrets-and-Config-Maps).
+
+**Script setup**
 
 You need to create Kubernetes secrets to store the Orka user credentials and the base image's SSH credentials.
+
+To create a Kubernetes secret in the `default` namespace of your cluster, run the following commands:
+
+```sh
+EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
+SSH_USERNAME=<username> SSH_PASSWORD=<password> ./add-ssh-creds.sh --apply
+```
+
+To remove the secrets from the `default` namespace, run:
+
+```sh
+./add-orka-creds.sh --delete
+./add-ssh-creds.sh --delete
+```
+
+To create a Kubernetes secret in a custom namespace, run the following commands against your preferred namespace:
+
+```sh
+NAMESPACE=tekton-orka EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
+NAMESPACE=tekton-orka SSH_USERNAME=<username> SSH_PASSWORD=<password> ./add-ssh-creds.sh --apply
+```
+
+To remove the secrets from the custom specify, run the following commands against the namespace:
+
+```sh
+NAMESPACE=tekton-orka ./add-orka-creds.sh --delete
+NAMESPACE=tekton-orka ./add-ssh-creds.sh --delete
+```
+
+**Manual setup**
+
+If you want to create the Kubernetes secrets manually, you can use the following example configuration. Make sure to provide the correct credentials for your Orka environment and the base image.
+
 
 ```yaml
 ---
@@ -51,9 +118,18 @@ stringData:
   password: admin
 ```
 
-The provided `Tasks` look for two Kubernetes secrets that store your credentials: `orka-creds` for the Orka user and `orka-ssh-creds` for the SSH credentials. In the current setup, both secrets have `username` and `password` keys.
+**Using an SSH key**
 
-These defaults exist for convenience and you can change them using the available [`Task` parameters](#Configuring-Secrets-and-Config-Maps).
+If using an SSH key to connect to the VM instead of an SSH username and password, complete the following:
+
+1. Copy the public key to the VM and commit the base image.
+2. Store the username and private key in a Kubernetes secret:
+
+```sh
+kubectl create secret generic orka-ssh-key --from-file=id_rsa=/path/to/id_rsa --from-literal=username=<username>
+```
+
+See also: [`use-ssh-key`](samples/use-ssh-key.yml) example
 
 ### Workspaces
 
@@ -90,10 +166,12 @@ These defaults exist for convenience and you can change them using the available
 | `orka-vm-name-config` | The name of the config map, which stores the name of the generated VM configuration. Applicable to `orka-init` / `orka-deploy` / `orka-teardown`. | orka-vm-name |
 | `orka-vm-name-config-key` | The name of the key in the VM name config map, which stores the name of the generated VM configuration. Applicable to `orka-init` / `orka-deploy` / `orka-teardown`. | vm-name |
 
-### Sample `TaskRun`
+### Samples `TaskRun`
 
-This `TaskRun` uses the `orka-full` `Task` to ...
+[samples/dump-disk-info.yaml](samples/dump-disk-info.yaml) is a sample `TaskRun` that uses the `orka-full` `Task` to create a VM, run a script on it, and then clean up the environment.
 
-```yaml
-TO DO
-```
+[samples/build-audiokit-pipeline.yaml](samples/build-audiokit-pipeline.yaml) is a  sample `Pipeline` that uses the `orka-full` `Task` and performs the following operations:
+1. Clones a git repository.
+2. Passes it to the Orka build agent.
+3. Stores build artifacts on a persistent volume.
+4. Cleans up the Orka environment.
