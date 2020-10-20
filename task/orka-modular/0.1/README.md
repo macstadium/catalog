@@ -1,10 +1,10 @@
-# Orka Tasks
+# Run macOS Builds with Tekton and Orka by MacStadium
 
 These `Tasks` are for utilizing multiple macOS build agents, in parallel or in series, in your [Orka environment](https://orkadocs.macstadium.com).
 
 ## `orka-modular`
 
-This `Task` combines the following three modular sub-tasks: `orka-init`, `orka-deploy`, and `orka-teardown`.
+`orka-modular.yaml` combines the following three modular `Tasks`: `orka-init`, `orka-deploy`, and `orka-teardown`.
 
 With these `Tasks`, you can build an end-to-end `Pipeline` that works with multiple macOS build agents.
 
@@ -137,7 +137,9 @@ roleRef:
 
 ## Storing your credentials
 
-The provided `Tasks` look for two Kubernetes secrets that store your credentials: `orka-creds` for the Orka user and `orka-ssh-creds` for the SSH credentials. In the current setup, both secrets have `username` and `password` keys.
+The provided `Tasks` look for two Kubernetes secrets that store your credentials: `orka-creds` for the Orka user and `orka-ssh-creds` for the SSH credentials.
+  * `orka-creds` has the following keys: `email` and `password`
+  * `orka-ssh-creds` has the following keys: `username` and `password`
 
 These defaults exist for convenience and you can change them using the available [`Task` parameters](#Configuring-Secrets-and-Config-Maps).
 
@@ -199,7 +201,7 @@ stringData:
   password: admin
 ```
 
-**Using an SSH key**
+#### Using an SSH key
 
 If using an SSH key to connect to the VM instead of an SSH username and password, complete the following:
 
@@ -210,7 +212,7 @@ If using an SSH key to connect to the VM instead of an SSH username and password
 kubectl create secret generic orka-ssh-key --from-file=id_rsa=/path/to/id_rsa --from-literal=username=<username>
 ```
 
-See also: [`use-ssh-key`](samples/use-ssh-key.yml) example
+See also: [`use-ssh-key`](samples/use-ssh-key.yaml) example
 
 ## Workspaces
 

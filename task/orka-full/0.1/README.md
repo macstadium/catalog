@@ -1,4 +1,4 @@
-# Orka Tasks
+# Run macOS Builds with Tekton and Orka by MacStadium
 
 This `Task` is for utilizing a single macOS build agent in your [Orka environment](https://orkadocs.macstadium.com).
 
@@ -24,7 +24,7 @@ See also: [GCP-MacStadium Site-to-Site VPN](https://docs.macstadium.com/docs/goo
 
 ### Installation
 
-Before you can use these `Tasks` in Tekton pipelines, you need to install them and the Orka configuration in your Kubernetes cluster.
+Before you can use this `Task` in Tekton pipelines, you need to install it and the Orka configuration in your Kubernetes cluster.
 
 **Default namespace installation**
 
@@ -56,7 +56,9 @@ NAMESPACE=tekton-orka ./install.sh --delete
 
 ### Storing your credentials
 
-The provided `Tasks` look for two Kubernetes secrets that store your credentials: `orka-creds` for the Orka user and `orka-ssh-creds` for the SSH credentials. In the current setup, both secrets have `username` and `password` keys.
+The provided `Task` looks for two Kubernetes secrets that store your credentials: `orka-creds` for the Orka user and `orka-ssh-creds` for the SSH credentials.
+  * `orka-creds` has the following keys: `email` and `password`
+  * `orka-ssh-creds` has the following keys: `username` and `password`
 
 These defaults exist for convenience and you can change them using the available [`Task` parameters](#Configuring-Secrets-and-Config-Maps).
 
@@ -118,7 +120,7 @@ stringData:
   password: admin
 ```
 
-**Using an SSH key**
+#### Using an SSH key
 
 If using an SSH key to connect to the VM instead of an SSH username and password, complete the following:
 
@@ -129,7 +131,7 @@ If using an SSH key to connect to the VM instead of an SSH username and password
 kubectl create secret generic orka-ssh-key --from-file=id_rsa=/path/to/id_rsa --from-literal=username=<username>
 ```
 
-See also: [`use-ssh-key`](samples/use-ssh-key.yml) example
+See also: [`use-ssh-key`](samples/use-ssh-key.yaml) example
 
 ### Workspaces
 
@@ -149,9 +151,8 @@ See also: [`use-ssh-key`](samples/use-ssh-key.yml) example
 | `copy-build` | Specifies whether to copy build artifacts from the Orka VM back to the workspace. Disable when there is no need to copy build artifacts (e.g., when running tests or linting code). | true |
 | `verbose` | Enables verbose logging for all connection activity to the VM. | false |
 | `ssh-key` | Specifies whether the SSH credentials secret contains an [SSH key](#using-an-ssh-key), as opposed to a password. | false |
-| `delete-vm` | Applicable *only* to the `orka-deploy` task. Specifies whether to delete the VM after use when run in a pipeline. You can discard build agents that are no longer needed to free up resources. Set to false if you intend to clean up VMs after use manually. | true |
 
-#### Configuring secrets and config maps
+#### Configuring secrets
 
 | Parameter | Description | Default |
 | --- | --- | ---: |
@@ -161,10 +162,6 @@ See also: [`use-ssh-key`](samples/use-ssh-key.yml) example
 | `ssh-secret` | The name of the secret holding your VM SSH credentials. | orka-ssh-creds |
 | `ssh-username-key` | The name of the key in the VM SSH credentials secret for the username associated with the macOS VM. | username |
 | `ssh-password-key` | The name of the key in the VM SSH credentials secret for the password associated with the macOS VM. If `ssh-key` is true, this parameter should specify the name of the key in the VM SSH credentials secret that holds the private SSH key. | password |
-| `orka-token-secret` | The name of the secret holding the authentication token used to access the Orka API. Applicable to `orka-init` / `orka-deploy` / `orka-teardown`. | orka-token |
-| `orka-token-secret-key` | The name of the key in the Orka token secret, which holds the authentication token. Applicable to `orka-init` / `orka-deploy` / `orka-teardown`. | token |
-| `orka-vm-name-config` | The name of the config map, which stores the name of the generated VM configuration. Applicable to `orka-init` / `orka-deploy` / `orka-teardown`. | orka-vm-name |
-| `orka-vm-name-config-key` | The name of the key in the VM name config map, which stores the name of the generated VM configuration. Applicable to `orka-init` / `orka-deploy` / `orka-teardown`. | vm-name |
 
 ### Samples
 
