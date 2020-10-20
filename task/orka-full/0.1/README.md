@@ -1,5 +1,7 @@
 # Run macOS Builds with Tekton and Orka by MacStadium
 
+> **IMPORTANT:** These `Tasks` require **Tekton Pipelines v0.16.0 or later** and an Orka environment running on **Orka 1.4.1 or later**.
+
 This `Task` is for utilizing a single macOS build agent in your [Orka environment](https://orkadocs.macstadium.com).
 
 This `Task` can replace the `orka-init`, `orka-deploy`, and `orka-teardown` modular tasks when your workflow works with a single macOS build agent.
@@ -8,7 +10,7 @@ This `Task` can replace the `orka-init`, `orka-deploy`, and `orka-teardown` modu
 
 A `Task` that creates a VM template with the specified configuration, deploys a VM instance from it, and then cleans up the environment. All operations in this `Task` are performed against an Orka environment.
 
-### Prerequisites
+## Prerequisites
 
 * You need a Kubernetes cluster with Tekton Pipelines v0.16.0 or later configured.
 * You need an Orka environment with the following components:
@@ -22,7 +24,7 @@ See also: [Using Orka, At a Glance](https://orkadocs.macstadium.com/docs/quick-s
 
 See also: [GCP-MacStadium Site-to-Site VPN](https://docs.macstadium.com/docs/google-cloud-setup)
 
-### Installation
+## Installation
 
 Before you can use this `Task` in Tekton pipelines, you need to install it and the Orka configuration in your Kubernetes cluster.
 
@@ -54,7 +56,7 @@ To uninstall from a selected namespace, run the script with the `-d` or `--delet
 NAMESPACE=tekton-orka ./install.sh --delete
 ```
 
-### Storing your credentials
+## Storing your credentials
 
 The provided `Task` looks for two Kubernetes secrets that store your credentials: `orka-creds` for the Orka user and `orka-ssh-creds` for the SSH credentials.
   * `orka-creds` has the following keys: `email` and `password`
@@ -133,13 +135,13 @@ kubectl create secret generic orka-ssh-key --from-file=id_rsa=/path/to/id_rsa --
 
 See also: [`use-ssh-key`](samples/use-ssh-key.yaml) example
 
-### Workspaces
+## Workspaces
 
 * **orka**: An Orka environment against which to perform all operations. The environment parameters are configured with the `Task` parameters.
 
-### Parameters
+## Parameters
 
-#### Common parameters
+### Common parameters
 
 | Parameter | Description | Default |
 | --- | --- | ---: |
@@ -152,7 +154,7 @@ See also: [`use-ssh-key`](samples/use-ssh-key.yaml) example
 | `verbose` | Enables verbose logging for all connection activity to the VM. | false |
 | `ssh-key` | Specifies whether the SSH credentials secret contains an [SSH key](#using-an-ssh-key), as opposed to a password. | false |
 
-#### Configuring secrets
+### Configuring secrets
 
 | Parameter | Description | Default |
 | --- | --- | ---: |
@@ -163,11 +165,11 @@ See also: [`use-ssh-key`](samples/use-ssh-key.yaml) example
 | `ssh-username-key` | The name of the key in the VM SSH credentials secret for the username associated with the macOS VM. | username |
 | `ssh-password-key` | The name of the key in the VM SSH credentials secret for the password associated with the macOS VM. If `ssh-key` is true, this parameter should specify the name of the key in the VM SSH credentials secret that holds the private SSH key. | password |
 
-### Samples
+## Samples
 
-[samples/dump-disk-info.yaml](samples/dump-disk-info.yaml) is a sample `TaskRun` that uses the `orka-full` `Task` to create a VM, run a script on it, and then clean up the environment.
+[dump-disk-info.yaml](samples/dump-disk-info.yaml) is a sample `TaskRun` that uses the `orka-full` `Task` to create a VM, run a script on it, and then clean up the environment.
 
-[samples/build-audiokit-pipeline.yaml](samples/build-audiokit-pipeline.yaml) is a  sample `Pipeline` that uses the `orka-full` `Task` and performs the following operations:
+[build-audiokit-pipeline.yaml](samples/build-audiokit-pipeline.yaml) is a  sample `Pipeline` that uses the `orka-full` `Task` and performs the following operations:
 1. Clones a git repository.
 2. Passes it to the Orka build agent.
 3. Stores build artifacts on a persistent volume.

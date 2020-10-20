@@ -1,5 +1,7 @@
 # Run macOS Builds with Tekton and Orka by MacStadium
 
+> **IMPORTANT:** These `Tasks` require **Tekton Pipelines v0.16.0 or later** and an Orka environment running on **Orka 1.4.1 or later**.
+
 These `Tasks` are for utilizing multiple macOS build agents, in parallel or in series, in your [Orka environment](https://orkadocs.macstadium.com).
 
 ## `orka-modular`
@@ -18,7 +20,7 @@ A `Task` that deploys a VM instance from a specified VM template. Usually, you w
 
 ### `orka-teardown`
 
-A `Task` that cleans up the Orka environment after your workload completes. This `Task` the VM instances deployed with `orka-deploy` and their related templates.
+A `Task` that cleans up the Orka environment after your workload completes. This `Task` deletes the VM instances deployed with `orka-deploy` and their related templates.
 
 ## Prerequisites
 
@@ -251,7 +253,7 @@ See also: [`use-ssh-key`](samples/use-ssh-key.yaml) example
 
 ### Samples
 
-[samples/parallel-deploy.yaml](parallel-deploy.yaml) is a sample `Pipeline` that uses the `orka-init`, `orka-deploy`, and `orka-teardown` `Tasks` and performs the following operations:
+[parallel-deploy.yaml](samples/parallel-deploy.yaml) is a sample `Pipeline` that uses the `orka-init`, `orka-deploy`, and `orka-teardown` `Tasks` and performs the following operations:
 1. Sets up an Orka job runner.
 2. Deploys 2 VMs and executes a different script on each VM.
 3. Cleans up the environment.
