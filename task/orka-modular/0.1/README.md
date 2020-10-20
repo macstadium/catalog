@@ -2,7 +2,7 @@
 
 > **IMPORTANT:** These `Tasks` require **Tekton Pipelines v0.16.0 or later** and an Orka environment running on **Orka 1.4.1 or later**.
 
-These `Tasks` are for utilizing multiple macOS build agents, in parallel or in series, in your [Orka environment](https://orkadocs.macstadium.com).
+These `Tasks` utilize multiple macOS build agents, in parallel or series, in your [Orka environment](https://orkadocs.macstadium.com).
 
 ## `orka-modular`
 
@@ -39,11 +39,11 @@ See also: [GCP-MacStadium Site-to-Site VPN](https://docs.macstadium.com/docs/goo
 
 ## Installation
 
-Before you can use these `Tasks` in Tekton pipelines, you need to install them and the Orka configuration in your Kubernetes cluster.
+Before using these `Tasks` in Tekton pipelines, you need to install them and the Orka configuration in your Kubernetes cluster.
 
 **Default namespace installation**
 
-To install in the `default` namespace of your Kubernetes cluster, run the following command against your actual Orka API endpoint.
+To install in your Kubernetes cluster's `default` namespace, run the following command against your actual Orka API endpoint.
 
 ```sh
 ORKA_API=http://10.221.188.100 ./install.sh --apply
@@ -143,7 +143,7 @@ The provided `Tasks` look for two Kubernetes secrets that store your credentials
   * `orka-creds` has the following keys: `email` and `password`
   * `orka-ssh-creds` has the following keys: `username` and `password`
 
-These defaults exist for convenience and you can change them using the available [`Task` parameters](#Configuring-Secrets-and-Config-Maps).
+These defaults exist for convenience, and you can change them using the available [`Task` parameters](#Configuring-Secrets-and-Config-Maps).
 
 **Script setup**
 

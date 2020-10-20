@@ -1,6 +1,6 @@
 # Run macOS Builds with Tekton and Orka by MacStadium
 
-> **IMPORTANT:** These `Tasks` require **Tekton Pipelines v0.16.0 or later** and an Orka environment running on **Orka 1.4.1 or later**.
+> **IMPORTANT:** This `Task` requires **Tekton Pipelines v0.16.0 or later** and an Orka environment running on **Orka 1.4.1 or later**.
 
 This `Task` is for utilizing a single macOS build agent in your [Orka environment](https://orkadocs.macstadium.com).
 
@@ -30,7 +30,7 @@ Before you can use this `Task` in Tekton pipelines, you need to install it and t
 
 **Default namespace installation**
 
-To install in the `default` namespace of your Kubernetes cluster, run the following command against your actual Orka API endpoint.
+To install in your Kubernetes cluster's `default` namespace, run the following command against your actual Orka API endpoint.
 
 ```sh
 ORKA_API=http://10.221.188.100 ./install.sh --apply
@@ -62,7 +62,7 @@ The provided `Task` looks for two Kubernetes secrets that store your credentials
   * `orka-creds` has the following keys: `email` and `password`
   * `orka-ssh-creds` has the following keys: `username` and `password`
 
-These defaults exist for convenience and you can change them using the available [`Task` parameters](#Configuring-Secrets).
+These defaults exist for convenience, and you can change them using the available [`Task` parameters](#Configuring-Secrets).
 
 **Script setup**
 
