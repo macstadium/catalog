@@ -60,7 +60,7 @@ The provided `Task` looks for two Kubernetes secrets that store your credentials
   * `orka-creds` has the following keys: `email` and `password`
   * `orka-ssh-creds` has the following keys: `username` and `password`
 
-These defaults exist for convenience and you can change them using the available [`Task` parameters](#Configuring-Secrets-and-Config-Maps).
+These defaults exist for convenience and you can change them using the available [`Task` parameters](#Configuring-Secrets).
 
 **Script setup**
 
