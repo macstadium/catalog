@@ -4,8 +4,6 @@
 
 This `Task` is for utilizing a single macOS build agent in your [Orka environment](https://orkadocs.macstadium.com).
 
-This `Task` can replace the `orka-init`, `orka-deploy`, and `orka-teardown` modular tasks when your workflow works with a single macOS build agent.
-
 ## `orka-full`
 
 A `Task` that creates a VM template with the specified configuration, deploys a VM instance from it, and then cleans up the environment. All operations in this `Task` are performed against an Orka environment.
@@ -28,33 +26,29 @@ See also: [GCP-MacStadium Site-to-Site VPN](https://docs.macstadium.com/docs/goo
 
 Before you can use this `Task` in Tekton pipelines, you need to install it and the Orka configuration in your Kubernetes cluster.
 
-**Default namespace installation**
-
-To install in your Kubernetes cluster's `default` namespace, run the following command against your actual Orka API endpoint.
-
 ```sh
-ORKA_API=http://10.221.188.100 ./install.sh --apply
+kubectl apply --namespace=$NAMESPACE -f orka-configuration.yaml
+kubectl apply --namespace=$NAMESPACE -f https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/orka-full.yaml
 ```
 
-To uninstall from the `default` namespace, run the script with the `-d` or `--delete` flag:
+You can use the following sample `orka-configuration.yaml`. Make sure to provide the correct Orka API endpoint for your Orka environment.
 
-```sh
-./install.sh --delete
+```yaml
+# orka-configuration.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orka-tekton-config
+data:
+  ORKA_API: http://10.221.188.100
 ```
 
-**Custom namespace installation**
-
-To install in a custom namespace, run the following command against your preferred namespace and your actual Orka API endpoint:
-
-```sh
-NAMESPACE=tekton-orka ORKA_API=http://10.221.188.100 ./install.sh --apply
-```
-
-To uninstall from a selected namespace, run the script with the `-d` or `--delete` flag against the namespace:
-
-```sh
-NAMESPACE=tekton-orka ./install.sh --delete
-```
+> **TIP:** Did you know you could use a script for easier install?
+>
+> curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/install.sh && chmod 755 install.sh
+> NAMESPACE=<namespace> ORKA_API=<endpoint> ./install.sh --apply
+>
+> See [SCRIPTS.md](https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/SCRIPTS.md)
 
 ## Storing your credentials
 
@@ -64,44 +58,15 @@ The provided `Task` looks for two Kubernetes secrets that store your credentials
 
 These defaults exist for convenience, and you can change them using the available [`Task` parameters](#Configuring-Secrets).
 
-**Script setup**
-
-You need to create Kubernetes secrets to store the Orka user credentials and the base image's SSH credentials.
-
-To create a Kubernetes secret in the `default` namespace of your cluster, run the following commands:
-
 ```sh
-EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
-SSH_USERNAME=<username> SSH_PASSWORD=<password> ./add-ssh-creds.sh --apply
+kubectl $ACTION --namespace=$NAMESPACE -f credentials.yaml
 ```
 
-To remove the secrets from the `default` namespace, run:
-
-```sh
-./add-orka-creds.sh --delete
-./add-ssh-creds.sh --delete
-```
-
-To create a Kubernetes secret in a custom namespace, run the following commands against your preferred namespace:
-
-```sh
-NAMESPACE=tekton-orka EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
-NAMESPACE=tekton-orka SSH_USERNAME=<username> SSH_PASSWORD=<password> ./add-ssh-creds.sh --apply
-```
-
-To remove the secrets from the custom specify, run the following commands against the namespace:
-
-```sh
-NAMESPACE=tekton-orka ./add-orka-creds.sh --delete
-NAMESPACE=tekton-orka ./add-ssh-creds.sh --delete
-```
-
-**Manual setup**
-
-If you want to create the Kubernetes secrets manually, you can use the following example configuration. Make sure to provide the correct credentials for your Orka environment and the base image.
+You can use the following sample `credentials.yaml`. Make sure to provide the correct credentials for your Orka environment and the correct SSH credentials for the base image you intend to use.
 
 
 ```yaml
+# credentials.yaml
 ---
 apiVersion: v1
 kind: Secret
@@ -122,7 +87,17 @@ stringData:
   password: admin
 ```
 
-#### Using an SSH key
+> **TIP:** Did you know you could use a script for easier setup?
+>
+> curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-orka-creds.sh && chmod 755 add-orka-creds.sh
+> NAMESPACE=<namespace> EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
+>
+> curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-ssh-creds.sh && chmod 755 add-ssh-creds.sh
+> NAMESPACE=<namespace> SSH_USERNAME=<username> SSH_PASSWORD=<password> ./add-ssh-creds.sh --apply
+>
+> See [SCRIPTS.md](https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/SCRIPTS.md)
+
+### Using an SSH key
 
 If using an SSH key to connect to the VM instead of an SSH username and password, complete the following:
 
