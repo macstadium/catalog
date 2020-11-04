@@ -58,7 +58,7 @@ To uninstall from the `default` namespace, run the script with the `-d` or `--de
 ./install.sh --delete
 ```
 
-### Custom namespace installation**
+### Custom namespace installation
 
 To install in a custom namespace, run the following command against your preferred namespace and your actual Orka API endpoint:
 
