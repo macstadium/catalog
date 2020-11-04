@@ -1,10 +1,16 @@
-# Install & Configure `orka-full` with Scripts
+# Install & Configure with Scripts
 
-For easier install and configuration of the `orka-full` `Task`, you can use the provided scripts.
+For easier install and configuration of the Orka Tekton `Tasks`, you can use the provided scripts.
+
+* [TL;DR;](#tldr)
+* [How to install the task](#how-to-instal-the-task)
+* [How to store your credentials](#how-to-store-your-credentials)
 
 ## TL;DR;
 
-### Install the task
+Omit `NAMESPACE` if installing in the `default` Kubernetes namespace.
+
+#### Install the task
 
 ```sh
 curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/install.sh && chmod 755 install.sh
@@ -12,7 +18,7 @@ curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-ful
 NAMESPACE=<namespace> ORKA_API=<endpoint> ./install.sh --apply
 ```
 
-### Store the Orka environment credentials
+#### Store the Orka environment credentials
 
 ```sh
 curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-orka-creds.sh && chmod 755 add-orka-creds.sh
@@ -20,7 +26,7 @@ curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-ful
 NAMESPACE=<namespace> EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
 ```
 
-### Store the SSH credentials for the base image
+#### Store the SSH credentials for the base image
 
 ```sh
 curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-ssh-creds.sh && chmod 755 add-ssh-creds.sh
@@ -28,7 +34,7 @@ curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-ful
 NAMESPACE=<namespace> SSH_USERNAME=<username> SSH_PASSWORD=<password> ./add-ssh-creds.sh --apply
 ```
 
-## Install the task
+## How to install the task
 
 Before you can use this `Task` in Tekton pipelines, you need to install it and the Orka configuration in your Kubernetes cluster.
 
@@ -57,16 +63,16 @@ To uninstall from the `default` namespace, run the script with the `-d` or `--de
 To install in a custom namespace, run the following command against your preferred namespace and your actual Orka API endpoint:
 
 ```sh
-NAMESPACE=tekton-orka ORKA_API=http://10.221.188.100 ./install.sh --apply
+NAMESPACE=<namespace> ORKA_API=<endpoint> ./install.sh --apply
 ```
 
 To uninstall from a selected namespace, run the script with the `-d` or `--delete` flag against the namespace:
 
 ```sh
-NAMESPACE=tekton-orka ./install.sh --delete
+NAMESPACE=<namespace> ./install.sh --delete
 ```
 
-## Storing your credentials
+## How to store your credentials
 
 The provided `Task` looks for two Kubernetes secrets that store your credentials: `orka-creds` for the Orka user and `orka-ssh-creds` for the SSH credentials.
   * `orka-creds` has the following keys: `email` and `password`
@@ -78,6 +84,7 @@ You need to create Kubernetes secrets to store the Orka user credentials and the
 
 ```sh
 curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-orka-creds.sh && chmod 755 add-orka-creds.sh
+
 curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-ssh-creds.sh && chmod 755 add-ssh-creds.sh
 ```
 
@@ -102,13 +109,13 @@ To remove the secrets from the `default` namespace, run:
 To create a Kubernetes secret in a custom namespace, run the following commands against your preferred namespace:
 
 ```sh
-NAMESPACE=tekton-orka EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
-NAMESPACE=tekton-orka SSH_USERNAME=<username> SSH_PASSWORD=<password> ./add-ssh-creds.sh --apply
+NAMESPACE=<namespace> EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
+NAMESPACE=<namespace> SSH_USERNAME=<username> SSH_PASSWORD=<password> ./add-ssh-creds.sh --apply
 ```
 
 To remove the secrets from the custom specify, run the following commands against the namespace:
 
 ```sh
-NAMESPACE=tekton-orka ./add-orka-creds.sh --delete
-NAMESPACE=tekton-orka ./add-ssh-creds.sh --delete
+NAMESPACE=<namespace> ./add-orka-creds.sh --delete
+NAMESPACE=<namespace> ./add-ssh-creds.sh --delete
 ```
