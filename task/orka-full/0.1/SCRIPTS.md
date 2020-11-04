@@ -4,14 +4,27 @@ For easier install and configuration of the `orka-full` `Task`, you can use the 
 
 ## TL;DR;
 
+### Install the task
+
 ```sh
 curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/install.sh && chmod 755 install.sh
+
 NAMESPACE=<namespace> ORKA_API=<endpoint> ./install.sh --apply
+```
 
+### Store the Orka environment credentials
+
+```sh
 curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-orka-creds.sh && chmod 755 add-orka-creds.sh
-NAMESPACE=<namespace> EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
 
+NAMESPACE=<namespace> EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
+```
+
+### Store the SSH credentials for the base image
+
+```sh
 curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-ssh-creds.sh && chmod 755 add-ssh-creds.sh
+
 NAMESPACE=<namespace> SSH_USERNAME=<username> SSH_PASSWORD=<password> ./add-ssh-creds.sh --apply
 ```
 

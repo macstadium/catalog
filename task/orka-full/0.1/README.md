@@ -27,9 +27,11 @@ See also: [GCP-MacStadium Site-to-Site VPN](https://docs.macstadium.com/docs/goo
 Before you can use this `Task` in Tekton pipelines, you need to install it and the Orka configuration in your Kubernetes cluster.
 
 ```sh
-kubectl apply --namespace=$NAMESPACE -f orka-configuration.yaml
-kubectl apply --namespace=$NAMESPACE -f https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/orka-full.yaml
+kubectl apply --namespace=<namespace> -f orka-configuration.yaml
+kubectl apply --namespace=<namespace> -f https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/orka-full.yaml
 ```
+
+Omit `--namespace` if installing in the `default` namespace.
 
 You can use the following sample `orka-configuration.yaml`. Make sure to provide the correct Orka API endpoint for your Orka environment.
 
@@ -46,7 +48,7 @@ data:
 > **TIP:** Did you know you could use a script for easier install?
 >
 > curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/install.sh && chmod 755 install.sh
-> NAMESPACE=<namespace> ORKA_API=<endpoint> ./install.sh --apply
+> NAMESPACE=\<namespace\> ORKA_API=\<endpoint\> ./install.sh --apply
 >
 > See [SCRIPTS.md](https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/SCRIPTS.md)
 
@@ -59,8 +61,10 @@ The provided `Task` looks for two Kubernetes secrets that store your credentials
 These defaults exist for convenience, and you can change them using the available [`Task` parameters](#Configuring-Secrets).
 
 ```sh
-kubectl $ACTION --namespace=$NAMESPACE -f credentials.yaml
+kubectl apply --namespace=<namespace> -f credentials.yaml
 ```
+
+Omit `--namespace` if installing in the `default` namespace.
 
 You can use the following sample `credentials.yaml`. Make sure to provide the correct credentials for your Orka environment and the correct SSH credentials for the base image you intend to use.
 
@@ -90,10 +94,10 @@ stringData:
 > **TIP:** Did you know you could use a script for easier setup?
 >
 > curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-orka-creds.sh && chmod 755 add-orka-creds.sh
-> NAMESPACE=<namespace> EMAIL=<email> PASSWORD=<password> ./add-orka-creds.sh --apply
+> NAMESPACE=\<namespace\> EMAIL=\<email\> PASSWORD=\<password\> ./add-orka-creds.sh --apply
 >
 > curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-ssh-creds.sh && chmod 755 add-ssh-creds.sh
-> NAMESPACE=<namespace> SSH_USERNAME=<username> SSH_PASSWORD=<password> ./add-ssh-creds.sh --apply
+> NAMESPACE=\<namespace\> SSH_USERNAME=\<username\> SSH_PASSWORD=\<password\> ./add-ssh-creds.sh --apply
 >
 > See [SCRIPTS.md](https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/SCRIPTS.md)
 
