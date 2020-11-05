@@ -46,11 +46,7 @@ data:
 ```
 
 > **TIP:** Did you know you could use a script for easier install?
->
-> curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/install.sh && chmod 755 install.sh
-> NAMESPACE=\<namespace\> ORKA_API=\<endpoint\> ./install.sh --apply
->
-> See [SCRIPTS.md](https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/SCRIPTS.md)
+> See [SCRIPTS.md](https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/SCRIPTS.md#install-the-task)
 
 ## Storing your credentials
 
@@ -93,13 +89,7 @@ stringData:
 
 > **TIP:** Did you know you could use a script for easier setup?
 >
-> curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-orka-creds.sh && chmod 755 add-orka-creds.sh
-> NAMESPACE=\<namespace\> EMAIL=\<email\> PASSWORD=\<password\> ./add-orka-creds.sh --apply
->
-> curl -LO https://raw.githubusercontent.com/tektoncd/catalog/master/task/orka-full/0.1/add-ssh-creds.sh && chmod 755 add-ssh-creds.sh
-> NAMESPACE=\<namespace\> SSH_USERNAME=\<username\> SSH_PASSWORD=\<password\> ./add-ssh-creds.sh --apply
->
-> See [SCRIPTS.md](https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/SCRIPTS.md)
+> See [SCRIPTS.md](https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/SCRIPTS.md#store-the-orka-environment-credentials)
 
 ### Using an SSH key
 
