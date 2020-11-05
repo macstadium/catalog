@@ -26,13 +26,6 @@ See also: [GCP-MacStadium Site-to-Site VPN](https://docs.macstadium.com/docs/goo
 
 Before you can use this `Task` in Tekton pipelines, you need to install it and the Orka configuration in your Kubernetes cluster.
 
-```sh
-kubectl apply --namespace=<namespace> -f orka-configuration.yaml
-kubectl apply --namespace=<namespace> -f https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/orka-full.yaml
-```
-
-Omit `--namespace` if installing in the `default` namespace.
-
 You can use the following sample `orka-configuration.yaml`. Make sure to provide the correct Orka API endpoint for your Orka environment.
 
 ```yaml
@@ -45,6 +38,13 @@ data:
   ORKA_API: http://10.221.188.100
 ```
 
+```sh
+kubectl apply --namespace=<namespace> -f orka-configuration.yaml
+kubectl apply --namespace=<namespace> -f https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/orka-full.yaml
+```
+
+Omit `--namespace` if installing in the `default` namespace.
+
 > **TIP:** Did you know you could use a script for easier install?
 > See [SCRIPTS.md](https://raw.githubusercontent.com/tektoncd/catalog/orka-0.1/task/orka-full/0.1/SCRIPTS.md#install-the-task)
 
@@ -56,14 +56,7 @@ The provided `Task` looks for two Kubernetes secrets that store your credentials
 
 These defaults exist for convenience, and you can change them using the available [`Task` parameters](#Configuring-Secrets).
 
-```sh
-kubectl apply --namespace=<namespace> -f credentials.yaml
-```
-
-Omit `--namespace` if installing in the `default` namespace.
-
 You can use the following sample `credentials.yaml`. Make sure to provide the correct credentials for your Orka environment and the correct SSH credentials for the base image you intend to use.
-
 
 ```yaml
 # credentials.yaml
@@ -86,6 +79,12 @@ stringData:
   username: admin
   password: admin
 ```
+
+```sh
+kubectl apply --namespace=<namespace> -f credentials.yaml
+```
+
+Omit `--namespace` if installing in the `default` namespace.
 
 > **TIP:** Did you know you could use a script for easier setup?
 >
