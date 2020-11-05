@@ -3,7 +3,7 @@
 For easier install and configuration of the Orka Tekton `Tasks`, you can use the provided scripts.
 
 * [TL;DR;](#tldr)
-* [How to install the task](#how-to-instal-the-task)
+* [How to install the task](#how-to-install-the-task)
 * [How to store your credentials](#how-to-store-your-credentials)
 
 ## TL;DR;
